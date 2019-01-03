@@ -1,15 +1,46 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Assignment 2 of the Coursera course for R
 
-## Write a short comment describing this function
+## Returns an matrix object for storing the matrix and its inverse
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(matStore = matrix())
+{
+  #Matrix storage location
+  inverseStore <- NULL
+  
+  set <- function(y)
+  {
+    matStore <<-y
+    inverseStore <<-NULL
+  }
+  get <- function() matStore
+  
+  setInverse <- function(inverse)
+  {
+    inverseStore <<- inverse
+  }
+  getInverse <- function() inverseStore
+  
+  list(set = set,
+       get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
+  
+  
 }
 
 
-## Write a short comment describing this function
+## This function returns the inverse of the matrix. 
+## If the matrix inverse is in the cache, it returns
+## the cashed results rather than recaclulating.
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve <- function(inverseMatrixObject) {
+  inverseMatrix <- inverseMatrixObject$getInverse()
+  if(!is.null(inverseMatrix)) {
+    message("Cached inverse matrix found!")
+    return(inverseMatrix)
+  }
+  data <- inverseMatrixObject$get()
+  invertedMatrix <- solve(data)
+  inverseMatrixObject$setInverse(invertedMatrix)
+  invertedMatrix
 }
